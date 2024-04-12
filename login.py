@@ -31,9 +31,9 @@ def signin():
         messagebox.showerror('Invalid', 'Invalid password.')
     
 
-# img = PhotoImage(file='Crystal Jewels.png')
-# img = img.subsample(2)
-# Label(root, image=img, bg='white').place(x=0, y=0)
+img = PhotoImage(file='Crystal Jewels.png')
+img = img.subsample(2)
+Label(root, image=img, bg='white').place(x=0, y=0)
 
 frame = Frame(root, width=400, height=500, bg='white')
 frame.place(x=480, y=50)
