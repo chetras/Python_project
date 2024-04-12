@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
+import os
 
 root = Tk()
 root.title('Login')
@@ -30,9 +31,9 @@ def signin():
         messagebox.showerror('Invalid', 'Invalid password.')
     
 
-img = PhotoImage(file='Crystal Jewels.png')
-img = img.subsample(2)
-Label(root, image=img, bg='white').place(x=0, y=0)
+# img = PhotoImage(file='Crystal Jewels.png')
+# img = img.subsample(2)
+# Label(root, image=img, bg='white').place(x=0, y=0)
 
 frame = Frame(root, width=400, height=500, bg='white')
 frame.place(x=480, y=50)
@@ -66,6 +67,10 @@ def on_leave(e):
     if name == '':
         code.insert(0, 'Password')
 
+def open_signup_screen():
+    root.destroy()
+    os.system('python signup.py')  # Run the signup.py file
+
 code = Entry(frame, fg='black', border=0, bg='white', highlightbackground='white', highlightthickness=0, font=('Lato', 16))
 code.place(x=50, y=220)
 code.insert(0, 'Password')
@@ -80,7 +85,7 @@ Button(frame, width=32, height=2, text='Sign in', highlightbackground='#856947',
 label = Label(frame, text="Don't have an account?", fg='black', bg='white', font=('Lato', 14))
 label.place(x=50, y=365)
 
-sign_up = Button(frame, width=8, height=2, text='Sign up', border=0, highlightbackground='#856947', cursor='hand2', fg='black')
+sign_up = Button(frame, width=8, height=2, text='Sign up', border=0, highlightbackground='#856947', cursor='hand2', fg='black',command=open_signup_screen)
 sign_up.place(x=270, y=360)
 
 

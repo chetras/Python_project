@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
-import ast
-
+import mysql.connector
+import os
 
 window = Tk()
 window.title('Sign Up')
@@ -9,36 +9,41 @@ window.geometry('925x680+300+200')
 window.configure(bg='white')
 window.resizable(False, False)
 
+# Establish Connection 
+connection = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="Chetra1234",  # Change it to your password
+    database="Shop"
+)
+
+# Create a cursor
+cursor = connection.cursor()
 
 def signup():
-    username=user.get()
-    password=code.get()
-    confirm_code= confirm_code.get()
+    username = user.get()
+    password = code.get()
+    confirm_password = confirm_code.get()
 
-    if password == confirm_code:
+    if password == confirm_password:
         try:
-            file=open('datasheet.txt', 'r+')
-            d=file.read()
-            r = ast.literal_eval(d)
+            # Insert user data into the database
+            query = "INSERT INTO user_account (username, password) VALUES (%s, %s)"
+            data = (username, password)
+            cursor.execute(query, data)
+            connection.commit()
 
-            dict2={username:password}
-            r.update(dict2)
-            file.truncate(0)
-            file.close()
+            messagebox.showinfo('Signup', 'Successfully signed up!')
 
-            file=open('datasheet.txt', 'w')
-            w=file.write(str(r))
-
-            messagebox.showeinfo('Signup', 'Successfully signed up!')
-
-        except:
-            file=open('datasheet.txt', 'w')
-            pp=str({'Username': 'Password'})
-            file.write(pp)
-            file.close()
-    
+            # Clear the entry fields
+            user.delete(0, 'end')
+            code.delete(0, 'end')
+            confirm_code.delete(0, 'end')
+        except mysql.connector.Error as error:
+            messagebox.showerror('Error', f'Failed to insert record into user_account table: {error}')
     else:
         messagebox.showerror('Invalid', 'Both passwords should match.')
+
 
 
 # img = PhotoImage(file='Crystal Jewels.png')
@@ -62,6 +67,10 @@ def on_leave(e):
     if name == '':
         user.insert(0, 'Username')
 
+def open_login_screen():
+    window.destroy()
+    os.system('python login.py')  # Run the signup.py file
+
 user = Entry(frame, fg='black', border=0, bg='white', highlightbackground='white', highlightthickness=0, font=('Lato', 16))
 user.place(x=50, y=150)
 user.insert(0, 'Username')
@@ -72,37 +81,40 @@ Frame(frame, width=320, height=3, bg='#856947').place(x=50, y=180)
 
 
 # Password
-def on_enter(e):
-    code.delete(0, 'end')
+def on_enter_password(e):
+    if code.get() == 'Password':
+        code.delete(0, 'end')
+        code.config(show="*")  # Show asterisks for password entry
 
-def on_leave(e):
-    name = code.get()
-    if name == '':
+def on_leave_password(e):
+    if code.get() == '':
         code.insert(0, 'Password')
+        code.config(show="")  # Show default text for password entry
 
 code = Entry(frame, fg='black', border=0, bg='white', highlightbackground='white', highlightthickness=0, font=('Lato', 16))
 code.place(x=50, y=220)
 code.insert(0, 'Password')
-code.bind('<FocusIn>', on_enter)
-code.bind('<FocusOut>', on_leave)
+code.bind('<FocusIn>', on_enter_password)
+code.bind('<FocusOut>', on_leave_password)
 
 Frame(frame, width=320, height=3, bg='#856947').place(x=50, y=250)
 
-
 # Confirm Password
-def on_enter(e):
-    code.delete(0, 'end')
+def on_enter_confirm_password(e):
+    if confirm_code.get() == 'Confirm Password':
+        confirm_code.delete(0, 'end')
+        confirm_code.config(show="*")  # Show asterisks for confirm password entry
 
-def on_leave(e):
-    name = code.get()
-    if name == '':
-        code.insert(0, 'Confirm Password')
+def on_leave_confirm_password(e):
+    if confirm_code.get() == '':
+        confirm_code.insert(0, 'Confirm Password')
+        confirm_code.config(show="")  # Show default text for confirm password entry
 
 confirm_code = Entry(frame, fg='black', border=0, bg='white', highlightbackground='white', highlightthickness=0, font=('Lato', 16))
 confirm_code.place(x=50, y=290)
 confirm_code.insert(0, 'Confirm Password')
-confirm_code.bind('<FocusIn>', on_enter)
-confirm_code.bind('<FocusOut>', on_leave)
+confirm_code.bind('<FocusIn>', on_enter_confirm_password)
+confirm_code.bind('<FocusOut>', on_leave_confirm_password)
 
 Frame(frame, width=320, height=3, bg='#856947').place(x=50, y=320)
 
@@ -112,7 +124,7 @@ Button(frame, width=32, height=2, text='Sign up', highlightbackground='#856947',
 label = Label(frame, text="Already have an account?", fg='black', bg='white', font=('Lato', 14))
 label.place(x=50, y=420)
 
-sign_in = Button(frame, width=8, height=2, text='Sign in', border=0, highlightbackground='#856947', cursor='hand2', fg='black')
+sign_in = Button(frame, width=8, height=2, text='Sign in', border=0, highlightbackground='#856947', cursor='hand2', fg='black',command=open_login_screen)
 sign_in.place(x=265, y=415)
 
 window.mainloop()
