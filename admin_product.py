@@ -128,12 +128,14 @@ def search_product():
         table.delete(item)
     for row in cursor.fetchall():
         table.insert("", "end", values=row)
+    clear_entries()
 # Button Click Functions
 def products_click():
     print("Products button clicked")
 
 def customers_click():
-    print("Customers button clicked")
+    window.destroy()
+    subprocess.run(['python', 'admin_customer.py'])
 
 def manage_click():
     print("Manage button clicked")

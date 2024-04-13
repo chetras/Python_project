@@ -70,8 +70,8 @@ def on_leave(e):
 
 def open_login_screen():
     window.destroy()
-    subprocess.run(['python', 'login.py'])  
-
+    import login
+    login.root()
 user = Entry(frame, fg='black', border=0, bg='white', highlightbackground='white', highlightthickness=0, font=('Lato', 16))
 user.place(x=50, y=150)
 user.insert(0, 'Username')
