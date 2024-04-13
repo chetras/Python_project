@@ -18,7 +18,7 @@ window.resizable(False, False)
 connection = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="bormeysql",  # Change it to your password
+    password="Chetra1234",  # Change it to your password
     database="Shop"
 )
 
@@ -29,15 +29,69 @@ cursor = connection.cursor()
 button_font = ("Lato", 15)  # Custom font for buttons
 entry_font = ("Lato", 12)  # Custom font for entries
 
+def clear_entries():
+    for entry in form_entries:
+        entry.delete(0, 'end')
+
 # Function to add product to the database and display in the table
 def add_product():
     values = [entry.get() for entry in form_entries]
     cursor.execute("INSERT INTO Products (id, name, type, price, stock) VALUES (%s, %s, %s, %s, %s)", values)
     connection.commit()
     table.insert("", "end", values=values)
+    clear_entries()
+
 
 def update_product():
-    print(1)
+    # Get the values from the entry fields
+    id_value = form_entries[0].get()  # Assuming the ID entry is the first one in the form_entries list
+    name_value = form_entries[1].get()
+    type_value = form_entries[2].get()
+    price_value = form_entries[3].get()
+    stock_value = form_entries[4].get()
+
+    # Update the values in the table view
+    selected_item = table.selection()
+    if selected_item:
+        current_values = table.item(selected_item, "values")
+        updated_values = [
+            id_value if id_value else current_values[0],
+            name_value if name_value else current_values[1],
+            type_value if type_value else current_values[2],
+            price_value if price_value else current_values[3],
+            stock_value if stock_value else current_values[4]
+        ]
+        table.item(selected_item, values=updated_values)
+
+        # Prepare the update query
+        update_query = "UPDATE Products SET "
+        data = []
+        if id_value:
+            update_query += "id = %s, "
+            data.append(id_value)
+        if name_value:
+            update_query += "name = %s, "
+            data.append(name_value)
+        if type_value:
+            update_query += "type = %s, "
+            data.append(type_value)
+        if price_value:
+            update_query += "price = %s, "
+            data.append(price_value)
+        if stock_value:
+            update_query += "stock = %s, "
+            data.append(stock_value)
+
+        # Remove the last comma and add the WHERE clause
+        update_query = update_query[:-2] + " WHERE id = %s"
+        data.append(current_values[0])
+
+        # Update the values in the database
+        cursor.execute(update_query, data)
+        connection.commit()
+        clear_entries()
+    else:
+        messagebox.showinfo("Wrong","Please select a product to update")
 
 
 def del_product():
