@@ -3,6 +3,7 @@ from tkinter import *
 import mysql.connector
 import os
 from tkinter import messagebox
+import subprocess
 
 
 from tkinter import ttk
@@ -17,7 +18,7 @@ window.resizable(False, False)
 connection = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="Chetra1234",  # Change it to your password
+    password="bormeysql",  # Change it to your password
     database="Shop"
 )
 
@@ -25,8 +26,8 @@ connection = mysql.connector.connect(
 cursor = connection.cursor()
 
 # Custom Font for Buttons
-button_font = ("Arial", 15)  # Custom font for buttons
-entry_font = ("Arial", 12)  # Custom font for entries
+button_font = ("Lato", 15)  # Custom font for buttons
+entry_font = ("Lato", 12)  # Custom font for entries
 
 # Function to add product to the database and display in the table
 def add_product():
@@ -37,7 +38,6 @@ def add_product():
 
 def update_product():
     print(1)
-
 
 
 def del_product():
@@ -86,8 +86,7 @@ def manage_click():
 
 def exit_click():
     window.destroy()
-    os.system('python login.py')
-
+    subprocess.run(['python', 'login.py'])
 img = PhotoImage(file='store.png')
 img = img.subsample(4)
 Label(window, image=img, bg='white').place(x=120, y=100)

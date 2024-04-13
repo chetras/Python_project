@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 import os
+import subprocess
 
 root = Tk()
 root.title('Login')
@@ -69,7 +70,8 @@ def on_leave(e):
 
 def open_signup_screen():
     root.destroy()
-    os.system('python signup.py')  # Run the signup.py file
+    import signup 
+    signup.window   
 
 code = Entry(frame, fg='black', border=0, bg='white', highlightbackground='white', highlightthickness=0, font=('Lato', 16))
 code.place(x=50, y=220)

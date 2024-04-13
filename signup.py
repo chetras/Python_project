@@ -1,7 +1,8 @@
 from tkinter import *
 from tkinter import messagebox
 import mysql.connector
-import os
+import sys
+import subprocess
 
 window = Tk()
 window.title('Sign Up')
@@ -69,7 +70,8 @@ def on_leave(e):
 
 def open_login_screen():
     window.destroy()
-    os.system('python login.py')  # Run the signup.py file
+    import login 
+    login.window   
 
 user = Entry(frame, fg='black', border=0, bg='white', highlightbackground='white', highlightthickness=0, font=('Lato', 16))
 user.place(x=50, y=150)
