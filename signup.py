@@ -14,7 +14,7 @@ window.resizable(False, False)
 connection = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="bormeysql",  # Change it to your password
+    password="Chetra1234",  # Change it to your password
     database="Shop"
 )
 
@@ -70,8 +70,7 @@ def on_leave(e):
 
 def open_login_screen():
     window.destroy()
-    import login 
-    login.window   
+    subprocess.run(['python', 'login.py'])  
 
 user = Entry(frame, fg='black', border=0, bg='white', highlightbackground='white', highlightthickness=0, font=('Lato', 16))
 user.place(x=50, y=150)

@@ -70,9 +70,7 @@ def on_leave(e):
 
 def open_signup_screen():
     root.destroy()
-    import signup 
-    signup.window   
-
+    subprocess.run(['python', 'signup.py'])
 code = Entry(frame, fg='black', border=0, bg='white', highlightbackground='white', highlightthickness=0, font=('Lato', 16))
 code.place(x=50, y=220)
 code.insert(0, 'Password')
