@@ -7,7 +7,8 @@ import subprocess
 
 
 from tkinter import ttk
-
+with open('user_id.txt', 'r') as file:
+        user_id = int(file.read())
 # Create the main window
 window = tk.Tk()
 window.title("Product Management System")
@@ -30,10 +31,8 @@ button_font = ("Lato", 15)  # Custom font for buttons
 entry_font = ("Lato", 12)  # Custom font for entries
 
 def sign_out():
-    # Retrieving the user_id from the file
     with open('user_id.txt', 'r') as file:
         user_id = int(file.read())
-
     if user_id:
         try:
             conn = mysql.connector.connect(
@@ -75,17 +74,23 @@ def update_stock(product_id, quantity):
     # Refresh the table view
     populate_table()
     
-def print_receipt(product_id, product_name, quantity, total_amount):
-    # Implement receipt printing logic here
-    # This could involve creating a receipt file or printing to a printer
+def show_receipt(product_id, product_name, quantity, total_amount, user_id, amount):
+    # Retrieve the username from the database based on the user_id
+    cursor.execute("SELECT username FROM user_account WHERE id = %s", (user_id,))
+    username = cursor.fetchone()[0]  # Assuming there is only one row for the user_id
 
-    # For demonstration purposes, let's print a simple receipt to the console
-    print("----- Receipt -----")
-    print(f"Product ID: {product_id}")
-    print(f"Product Name: {product_name}")
-    print(f"Quantity: {quantity}")
-    print(f"Total Amount: ${total_amount}")
-    print("-------------------")
+    # Calculate the change
+    change = amount - total_amount
+
+    # Create a new pop-up window for the receipt
+    receipt_window = tk.Toplevel(window)
+    receipt_window.resizable(False,False)
+    receipt_window.title("Receipt Info")
+
+    # Display the receipt information including username and change
+    receipt_info = f"Username: {username}\nProduct ID: {product_id}\nProduct Name: {product_name}\nQuantity: {quantity}\nTotal Amount: ${total_amount}\nPayment Amount: ${amount}\nChange: ${change if change >= 0 else 0}"
+    receipt_label = tk.Label(receipt_window, text=receipt_info, font=("Lato", 12))
+    receipt_label.pack(padx=20, pady=10)
 
 def pay_product():
     product_id = form_entries[0].get()
@@ -98,8 +103,13 @@ def pay_product():
         # Payment successful
         messagebox.showinfo("Payment Successful", "Payment has been successfully processed.")
 
-        # Print receipt
-        print_receipt(product_id, product_name, quantity, total_amount)
+        # Insert order information into the user_order table
+        cursor.execute("INSERT INTO user_order (id, user_id, name, quantity, total, Amount) VALUES (%s, %s, %s, %s, %s, %s)",
+                       (product_id, user_id, product_name, quantity, total_amount, amount))
+        connection.commit()
+
+        # Show receipt information in a pop-up window
+        show_receipt(product_id, product_name, quantity, total_amount, user_id, amount)
 
         # Update stock in the Products table
         update_stock(product_id, quantity)
@@ -174,14 +184,14 @@ def populate_table():
     for row in cursor.fetchall():
         table.insert("", "end", values=row)
 
-def products_click():
-    print("Products button clicked")
+# def shop_click():
+#     window.destroy()
+#     subprocess.run(['python', 'user_shop.py'])   
 
-def customers_click():
-    print("Customers button clicked")
+def acc_click():
+    window.destroy()
+    subprocess.run(['python', 'user_account.py']) 
 
-def manage_click():
-    print("Manage button clicked")
 
 def exit_click():
     window.destroy()
@@ -193,10 +203,10 @@ button_frame = tk.Frame(window)
 button_frame.pack(side="top", fill="x")
 
 # Buttons for Products, Customers, Manage, Exit
-shop_button = tk.Button(button_frame, text="Shop", font=button_font, command=products_click, width=10,padx=10)
+shop_button = tk.Button(button_frame, text="Shop", font=button_font, width=10,padx=10)
 shop_button.pack(side="left",padx=20)
 
-account_button = tk.Button(button_frame, text="Account", font=button_font, command=customers_click, width=10,padx=10)
+account_button = tk.Button(button_frame, text="Account", font=button_font, command=acc_click, width=10,padx=10)
 account_button.pack(side="left", padx=20)
 
 signout_button = tk.Button(window, text="Sign Out", font=button_font, command=exit_click, width=10)

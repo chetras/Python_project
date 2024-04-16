@@ -14,7 +14,7 @@ window.resizable(False, False)
 connection = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="bormeysql",  # Change it to your password
+    password="Chetra1234",  # Change it to your password
     database="Shop"
 )
 
@@ -26,24 +26,32 @@ def signup():
     password = code.get()
     confirm_password = confirm_code.get()
 
-    if password == confirm_password:
-        try:
-            # Insert user data into the database
-            query = "INSERT INTO user_account (username, password) VALUES (%s, %s)"
-            data = (username, password)
-            cursor.execute(query, data)
-            connection.commit()
+    try:
+        # Check if the username already exists in the database
+        cursor.execute("SELECT * FROM user_account WHERE username = %s", (username,))
+        existing_user = cursor.fetchone()
 
-            messagebox.showinfo('Signup', 'Successfully signed up!')
+        if existing_user:
+            messagebox.showerror('Error', 'Username already exists. Please choose a different username.')
+        else:
+            if password == confirm_password:
+                # Insert user data into the database
+                query = "INSERT INTO user_account (username, password) VALUES (%s, %s)"
+                data = (username, password)
+                cursor.execute(query, data)
+                connection.commit()
 
-            # Clear the entry fields
-            user.delete(0, 'end')
-            code.delete(0, 'end')
-            confirm_code.delete(0, 'end')
-        except mysql.connector.Error as error:
-            messagebox.showerror('Error', f'Failed to insert record into user_account table: {error}')
-    else:
-        messagebox.showerror('Invalid', 'Both passwords should match.')
+                messagebox.showinfo('Signup', 'Successfully signed up!')
+
+                # Clear the entry fields
+                user.delete(0, 'end')
+                code.delete(0, 'end')
+                confirm_code.delete(0, 'end')
+            else:
+                messagebox.showerror('Invalid', 'Both passwords should match.')
+    except mysql.connector.Error as error:
+        messagebox.showerror('Error', f'Failed to insert record into user_account table: {error}')
+
 
 
 
