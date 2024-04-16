@@ -2,35 +2,82 @@ from tkinter import *
 from tkinter import messagebox
 import os
 import subprocess
+import mysql.connector
 
 root = Tk()
 root.title('Login')
 root.geometry('925x680+300+200')
 root.configure(bg='#fff')
 root.resizable(False, False)
+user_id = None  # Store the logged-in user ID
 
 def signin():
     username=user.get()
     password=code.get()
+    try:
+        conn = mysql.connector.connect(
+            user="root",
+            password="Chetra1234",
+            host="localhost",
+            database="Shop"
+        )
 
-    if username == 'admin' and password=='1234':
-        screen=Toplevel(root)
-        screen.title('App')
-        screen.geometry('925x500+300+200')
-        screen.config(bg='white')
+        cursor = conn.cursor()
 
-        Label(screen, text='Hi brader!', bg='#fff', font=('Arial', 30, 'bold')).pack(expand=True)
-        screen.mainloop()
+        if username == 'admin' and password=='12345':
+            messagebox.showinfo("Login Granted", "Welcome Admin")
+            root.destroy()
+            subprocess.run(['python', 'admin_product.py'])   
+        else:
+            sql = "SELECT * FROM user_account WHERE username = %s AND password = %s"
+            cursor.execute(sql, (username, password))
 
-    elif username != 'admin' and password!='1234':
-        messagebox.showerror('Invalid', 'Invalid username and password.')
+            result = cursor.fetchone()
 
-    elif username != 'admin':
-        messagebox.showerror('Invalid', 'Invalid username.')
+            if result: 
+                user_id = result[0]
 
-    elif password!='1234':
-        messagebox.showerror('Invalid', 'Invalid password.')
-    
+                with open('user_id.txt', 'w') as file:
+                    file.write(str(user_id))
+
+                update_logged_in_status(cursor, user_id, 1)
+                conn.commit()
+                messagebox.showinfo("Login Granted", "Welcome")
+                root.destroy()
+                subprocess.run(['python', 'user_shop.py'])
+            else:
+                messagebox.showerror("Login Failed", "Invalid username or password")
+        conn.close()
+    except mysql.connector.Error as err: 
+        messagebox.showerror("Error", f"An error occurred: {str(err)}")
+
+def update_logged_in_status(cursor, user_id, status):
+    update_sql = "UPDATE user_account SET logged_in = %s WHERE id = %s"
+    cursor.execute(update_sql, (status, user_id))
+
+def sign_out():
+    # Retrieving the user_id from the file
+    with open('user_id.txt', 'r') as file:
+        user_id = int(file.read())
+
+    if user_id:
+        try:
+            conn = mysql.connector.connect(
+                user="root",
+                password="Chetra1234",
+                host="localhost",
+                database="Shop"
+            )
+
+            cursor = conn.cursor()
+            update_logged_in_status(cursor, user_id, 0)  # Set logged_in status to 0 for the logged-out user
+            conn.commit()
+            user_id = None  # Reset the user ID
+
+        except mysql.connector.Error as err:
+            messagebox.showerror("Error", f"An error occurred: {str(err)}")
+    root.destroy()  # Close the application
+
 
 img = PhotoImage(file='Crystal Jewels.png')
 img = img.subsample(2)
@@ -90,5 +137,5 @@ label.place(x=50, y=365)
 sign_up = Button(frame, width=8, height=2, text='Sign up', border=0, highlightbackground='#856947', cursor='hand2', fg='black',command=open_signup_screen)
 sign_up.place(x=270, y=360)
 
-
+root.protocol("WM_DELETE_WINDOW", sign_out)  # Bind exit_click to window close
 root.mainloop()

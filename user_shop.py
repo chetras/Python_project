@@ -29,6 +29,34 @@ cursor = connection.cursor()
 button_font = ("Lato", 15)  # Custom font for buttons
 entry_font = ("Lato", 12)  # Custom font for entries
 
+def sign_out():
+    # Retrieving the user_id from the file
+    with open('user_id.txt', 'r') as file:
+        user_id = int(file.read())
+
+    if user_id:
+        try:
+            conn = mysql.connector.connect(
+                user="root",
+                password="Chetra1234",
+                host="localhost",
+                database="Shop"
+            )
+
+            cursor = conn.cursor()
+            update_logged_in_status(cursor, user_id, 0)  # Set logged_in status to 0 for the logged-out user
+            conn.commit()
+            user_id = None  # Reset the user ID
+
+        except mysql.connector.Error as err:
+            messagebox.showerror("Error", f"An error occurred: {str(err)}")
+    window.destroy()  # Close the application
+
+def update_logged_in_status(cursor, user_id, status):
+    update_sql = "UPDATE user_account SET logged_in = %s WHERE id = %s"
+    cursor.execute(update_sql, (status, user_id))
+
+
 def clear_entries():
     for entry in form_entries:
         entry.delete(0, 'end')
@@ -151,5 +179,6 @@ table.configure(yscrollcommand=scrollbar.set)
 
 # Populate the table with data from the database
 populate_table()
+window.protocol("WM_DELETE_WINDOW", sign_out)  # Bind exit_click to window close
 
 window.mainloop()
