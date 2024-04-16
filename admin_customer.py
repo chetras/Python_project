@@ -70,11 +70,9 @@ def products_click():
     subprocess.run(['python', 'admin_product.py'])
 
 
-def customers_click():
-    print("Customers button clicked")
-
 def manage_click():
-    print("Manage button clicked")
+    window.destroy()
+    subprocess.run(['python', 'admin_manage.py'])
 
 def exit_click():
     window.destroy()
@@ -91,7 +89,7 @@ button_frame.pack(side="top", fill="x")
 products_button = tk.Button(button_frame, text="Products", font=button_font, command=products_click, width=10,padx=10)
 products_button.pack(side="left",padx=20)
 
-customers_button = tk.Button(button_frame, text="Customers", font=button_font, command=customers_click, width=10,padx=10)
+customers_button = tk.Button(button_frame, text="Customers", font=button_font, width=10,padx=10)
 customers_button.pack(side="left", padx=20)
 
 manage_button = tk.Button(button_frame, text="Manage", font=button_font, command=manage_click, width=10)
