@@ -33,7 +33,11 @@ def clear_entries():
     for entry in form_entries:
         entry.delete(0, 'end')
 
+def  pay_product():
+    print(1)
 
+def receipt_product():
+    print(1)
 def show_product():
      # Clear the table before repopulating with all data
     for item in table.get_children():
@@ -43,32 +47,21 @@ def show_product():
 
 # Function to populate the table view with data from the database
 def populate_table():
-    cursor.execute("SELECT * FROM user_account")
+    cursor.execute("SELECT * FROM Products")
     for row in cursor.fetchall():
         table.insert("", "end", values=row)
 
-def search_product():
-    # Get the user ID from the entry field
-    username_id = form_entries[0].get()  # Assuming the user ID entry is at index 0
-
-    # Clear the table before performing the search
-    for item in table.get_children():
-        table.delete(item)
-
-    # Query the database for the user ID
-    cursor.execute("SELECT * FROM user_account WHERE id = %s", (username_id,))
-    
-    # Populate the table with the search result
-    for row in cursor.fetchall():
-        table.insert("", "end", values=row)
-
-    clear_entries()
-    
+# def search_product():
+#     search_query = search_entry.get()
+#     cursor.execute("SELECT * FROM Products WHERE id = %s OR name LIKE %s", (search_query, '%' + search_query + '%'))
+#     # Clear the table before populating with search results
+#     for item in table.get_children():
+#         table.delete(item)
+#     for row in cursor.fetchall():
+#         table.insert("", "end", values=row)
 # Button Click Functions
 def products_click():
-    window.destroy()
-    subprocess.run(['python', 'admin_product.py'])
-
+    print("Products button clicked")
 
 def customers_click():
     print("Customers button clicked")
@@ -79,27 +72,21 @@ def manage_click():
 def exit_click():
     window.destroy()
     subprocess.run(['python', 'login.py'])
-img = PhotoImage(file='customer.png')
-img = img.subsample(4)
-Label(window, image=img, bg='white').place(x=120, y=100)
+
 
 # Frame for Buttons
 button_frame = tk.Frame(window)
 button_frame.pack(side="top", fill="x")
 
 # Buttons for Products, Customers, Manage, Exit
-products_button = tk.Button(button_frame, text="Products", font=button_font, command=products_click, width=10,padx=10)
-products_button.pack(side="left",padx=20)
+shop_button = tk.Button(button_frame, text="Shop", font=button_font, command=products_click, width=10,padx=10)
+shop_button.pack(side="left",padx=20)
 
-customers_button = tk.Button(button_frame, text="Customers", font=button_font, command=customers_click, width=10,padx=10)
-customers_button.pack(side="left", padx=20)
-
-manage_button = tk.Button(button_frame, text="Manage", font=button_font, command=manage_click, width=10)
-manage_button.pack(side="left",padx= 20)
+account_button = tk.Button(button_frame, text="Account", font=button_font, command=customers_click, width=10,padx=10)
+account_button.pack(side="left", padx=20)
 
 signout_button = tk.Button(window, text="Sign Out", font=button_font, command=exit_click, width=10)
 signout_button.pack(side="bottom", anchor="sw", padx=20, pady=10)
-
 
 # Icon Area
 icon_label = tk.Frame(window, height=50, width=100)
@@ -108,9 +95,14 @@ icon_label.pack(side="left", padx=10)
 # Form Fields
 form_frame = tk.Frame(window)
 form_frame.place(x=100, y=20)
-form_frame.pack(side="left", padx=10)
+form_frame.pack(side="left", padx=10,pady=20)
 
-form_labels = [ "User.#","User. Name"]
+# Add a label above the entry fields
+order_label = tk.Label(form_frame, text="Order Here", font=("Lato", 30))
+order_label.pack(anchor="w", pady=(0, 10))  # Add some vertical padding
+
+
+form_labels = [ "Pro.#","Pro. Name", "Quantity"]
 form_entries = []
 
 for label_text in form_labels:
@@ -120,22 +112,31 @@ for label_text in form_labels:
     entry.pack(anchor="w")
     form_entries.append(entry)
 
+# Add a label under the entry fields to display the total amount
+total_label = tk.Label(form_frame, text="Total:", font=("Lato", 15))
+total_label.pack(anchor="w", pady=(10, 0))  # Add some vertical padding
 
+amount_label = tk.Label(form_frame, text="Amount:", font=("Lato", 15))
+amount_label.pack(anchor="w", pady=(10, 0))  # Add some vertical padding
+
+amount_entry = tk.Entry(form_frame, font=entry_font)  # Increase font size for entries
+amount_entry.pack(anchor="w")
 # Buttons
 buttons_frame = tk.Frame(window)
 buttons_frame.pack(side="left", padx=10)
 
-search_button = tk.Button(buttons_frame, text="Search", width=10, command=search_product)
-search_button.pack(fill="x", padx=5, pady=10)
+pay_button = tk.Button(buttons_frame, text="Pay", width=10, command=pay_product)
+pay_button.pack(fill="x", padx=5, pady=10)
 
-showall_button = tk.Button(buttons_frame, text="Show all", width=10, command=show_product)
-showall_button.pack(fill="x", padx=5, pady=10)
+receipt_button = tk.Button(buttons_frame, text="Receipt", width=10, command=receipt_product)
+receipt_button.pack(fill="x", padx=5, pady=10)
+
 
 # Table
 table_frame = tk.Frame(window)
 table_frame.pack(side="left", padx=10, fill="both", expand=True)
 
-columns = ("#", "Usrname", "password","Order", "Amount")
+columns = ("#", "Name", "Type", "Price", "Stock")
 table = ttk.Treeview(table_frame, columns=columns, show="headings")
 for col in columns:
     table.heading(col, text=col)
