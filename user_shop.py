@@ -56,16 +56,106 @@ def update_logged_in_status(cursor, user_id, status):
     update_sql = "UPDATE user_account SET logged_in = %s WHERE id = %s"
     cursor.execute(update_sql, (status, user_id))
 
-
 def clear_entries():
     for entry in form_entries:
         entry.delete(0, 'end')
 
-def  pay_product():
-    print(1)
+def update_stock(product_id, quantity):
+    # Retrieve current stock from the database
+    cursor.execute("SELECT stock FROM Products WHERE id = %s", (product_id,))
+    current_stock = float(cursor.fetchone()[0])  # Convert to float
 
-def receipt_product():
-    print(1)
+    # Calculate new stock
+    new_stock = current_stock - quantity
+
+    # Update stock in the database
+    cursor.execute("UPDATE Products SET stock = %s WHERE id = %s", (new_stock, product_id))
+    connection.commit()
+
+    # Refresh the table view
+    populate_table()
+    
+def print_receipt(product_id, product_name, quantity, total_amount):
+    # Implement receipt printing logic here
+    # This could involve creating a receipt file or printing to a printer
+
+    # For demonstration purposes, let's print a simple receipt to the console
+    print("----- Receipt -----")
+    print(f"Product ID: {product_id}")
+    print(f"Product Name: {product_name}")
+    print(f"Quantity: {quantity}")
+    print(f"Total Amount: ${total_amount}")
+    print("-------------------")
+
+def pay_product():
+    product_id = form_entries[0].get()
+    product_name = form_entries[1].get()
+    quantity = int(form_entries[2].get())
+    amount = float(amount_entry.get())  # Get the amount entered by the user
+    total_amount = float(total_label.cget("text").split("$")[1])  # Get the total amount from the label
+
+    if amount >= total_amount:
+        # Payment successful
+        messagebox.showinfo("Payment Successful", "Payment has been successfully processed.")
+
+        # Print receipt
+        print_receipt(product_id, product_name, quantity, total_amount)
+
+        # Update stock in the Products table
+        update_stock(product_id, quantity)
+
+        # Clear the entries and reset the total amount
+        clear_entries()
+        total_label.config(text="Total:")
+        # Clear the amount entry field
+        amount_entry.delete(0, 'end')
+
+    else:
+        # Insufficient payment
+        messagebox.showerror("Insufficient Payment", "The amount entered is insufficient for the total.")
+
+def calculate_total():
+    # Retrieve the values entered by the user
+    product_id = form_entries[0].get()
+    product_name = form_entries[1].get()
+    quantity = int(form_entries[2].get())
+
+    # Check if the product exists in the database
+    cursor.execute("SELECT * FROM Products WHERE id = %s AND name = %s", (product_id, product_name))
+    product = cursor.fetchone()
+
+    if product:
+        _, _, _, price, _ = product
+        price = float(price)  # Convert price to a numeric type
+        quantity = int(quantity)  # Ensure quantity is an integer
+  
+
+        # Calculate the total amount
+        total_amount = price * quantity
+
+        # Display the total amount
+        total_label.config(text="Total: $" + str(total_amount))
+    else:
+        # Show an error message if the product does not exist
+        messagebox.showerror("Product Not Found", "The product with the specified ID and name does not exist.")
+
+
+def retrieve_price_from_database(product_id):
+    # Query the database to retrieve the price of the product
+    cursor.execute("SELECT price FROM Products WHERE id = %s", (product_id,))
+    price = cursor.fetchone()
+    if price:
+        return price[0]
+    else:
+        return None
+    
+    
+def cancel_product():
+    # Clear the entries
+    clear_entries()
+    # Reset the total amount to blank
+    total_label.config(text="Total:")
+
 def show_product():
      # Clear the table before repopulating with all data
     for item in table.get_children():
@@ -75,19 +165,15 @@ def show_product():
 
 # Function to populate the table view with data from the database
 def populate_table():
+    # Clear the table before repopulating with all data
+    for item in table.get_children():
+        table.delete(item)
+
+    # Repopulate the table with all data
     cursor.execute("SELECT * FROM Products")
     for row in cursor.fetchall():
         table.insert("", "end", values=row)
 
-# def search_product():
-#     search_query = search_entry.get()
-#     cursor.execute("SELECT * FROM Products WHERE id = %s OR name LIKE %s", (search_query, '%' + search_query + '%'))
-#     # Clear the table before populating with search results
-#     for item in table.get_children():
-#         table.delete(item)
-#     for row in cursor.fetchall():
-#         table.insert("", "end", values=row)
-# Button Click Functions
 def products_click():
     print("Products button clicked")
 
@@ -115,7 +201,8 @@ account_button.pack(side="left", padx=20)
 
 signout_button = tk.Button(window, text="Sign Out", font=button_font, command=exit_click, width=10)
 signout_button.pack(side="bottom", anchor="sw", padx=20, pady=10)
-
+total_button = tk.Button(button_frame, text="Calculate Total", command=calculate_total, width=10)
+total_button.pack( padx=5, pady=10,anchor="w")
 # Icon Area
 icon_label = tk.Frame(window, height=50, width=100)
 icon_label.pack(side="left", padx=10)
@@ -156,8 +243,8 @@ buttons_frame.pack(side="left", padx=10)
 pay_button = tk.Button(buttons_frame, text="Pay", width=10, command=pay_product)
 pay_button.pack(fill="x", padx=5, pady=10)
 
-receipt_button = tk.Button(buttons_frame, text="Receipt", width=10, command=receipt_product)
-receipt_button.pack(fill="x", padx=5, pady=10)
+cancel_button = tk.Button(buttons_frame, text="Cancel", width=10, command=cancel_product)
+cancel_button.pack(fill="x", padx=5, pady=10)
 
 
 # Table
