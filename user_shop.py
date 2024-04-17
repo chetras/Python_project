@@ -211,8 +211,8 @@ account_button.pack(side="left", padx=20)
 
 signout_button = tk.Button(window, text="Sign Out", font=button_font, command=exit_click, width=10)
 signout_button.pack(side="bottom", anchor="sw", padx=20, pady=10)
-total_button = tk.Button(button_frame, text="Calculate Total", command=calculate_total, width=10)
-total_button.pack( padx=5, pady=10,anchor="w")
+
+
 # Icon Area
 icon_label = tk.Frame(window, height=50, width=100)
 icon_label.pack(side="left", padx=10)
@@ -253,9 +253,11 @@ buttons_frame.pack(side="left", padx=10)
 pay_button = tk.Button(buttons_frame, text="Pay", width=10, command=pay_product)
 pay_button.pack(fill="x", padx=5, pady=10)
 
+total_button = tk.Button(buttons_frame, text="Calculate Total", width=10, command=calculate_total)
+total_button.pack(fill="x", padx=5, pady=10)
+
 cancel_button = tk.Button(buttons_frame, text="Cancel", width=10, command=cancel_product)
 cancel_button.pack(fill="x", padx=5, pady=10)
-
 
 # Table
 table_frame = tk.Frame(window)
