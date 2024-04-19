@@ -19,7 +19,7 @@ window.resizable(False, False)
 connection = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="Chetra1234",  # Change it to your password
+    password="bormeysql",  # Change it to your password
     database="Shop"
 )
 
@@ -37,7 +37,7 @@ def sign_out():
         try:
             conn = mysql.connector.connect(
                 user="root",
-                password="Chetra1234",
+                password="bormeysql", #Change password
                 host="localhost",
                 database="Shop"
             )
@@ -190,12 +190,16 @@ def populate_table():
 
 def acc_click():
     window.destroy()
-    subprocess.run(['python', 'user_account.py']) 
+    # subprocess.run(['python', 'user_account.py']) 
+    import user_account
+    user_account.window()
 
 
 def exit_click():
     window.destroy()
-    subprocess.run(['python', 'login.py'])
+    # subprocess.run(['python', 'login.py'])
+    import login
+    login.window()
 
 
 # Frame for Buttons

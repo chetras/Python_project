@@ -16,7 +16,7 @@ window.resizable(False, False)
 connection = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="Chetra1234",  # Change it to your password
+    password="bormeysql",  # Change it to your password
     database="Shop"
 )
 
@@ -59,7 +59,7 @@ def sign_out():
         try:
             conn = mysql.connector.connect(
                 user="root",
-                password="Chetra1234",
+                password="bormeysql", # Change it to your password
                 host="localhost",
                 database="Shop"
             )
@@ -81,17 +81,17 @@ def update_logged_in_status(cursor, user_id, status):
 # Button Click Functions
 def shop_click():
     window.destroy()
-    subprocess.run(['python', 'user_shop.py']) 
+    # subprocess.run(['python', 'user_shop.py'])
+    import user_shop
+    user_shop.window() 
 
 
 def exit_click():
     window.destroy()
-    subprocess.run(['python', 'login.py'])
+    # subprocess.run(['python', 'login.py'])
+    import login
+    login.window()
 
-
-def exit_click():
-    window.destroy()
-    subprocess.run(['python', 'login.py'])
 
 # img = PhotoImage(file='customer.png')
 # img = img.subsample(4)

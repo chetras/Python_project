@@ -17,7 +17,7 @@ window.geometry('1000x680+300+200')
 connection = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="Chetra1234",  # Change it to your password
+    password="bormeysql",  # Change it to your password
     database="Shop"
 )
 
@@ -30,15 +30,21 @@ entry_font = ("Lato", 12)  # Custom font for entries
 
 def products_click():
     window.destroy()
-    subprocess.run(['python', 'admin_product.py'])
+    # subprocess.run(['python', 'admin_product.py'])
+    import admin_product
+    admin_product.window()
 
 def customers_click():
     window.destroy()
-    subprocess.run(['python', 'admin_customer.py'])
+    # subprocess.run(['python', 'admin_customer.py'])
+    import admin_customer
+    admin_customer.window()
 
 def exit_click():
     window.destroy()
-    subprocess.run(['python', 'login.py'])
+    # subprocess.run(['python', 'login.py'])
+    import login
+    login.window()
 
 # Frame for Buttons
 button_frame = tk.Frame(window)

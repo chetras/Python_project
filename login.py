@@ -17,7 +17,7 @@ def signin():
     try:
         conn = mysql.connector.connect(
             user="root",
-            password="Chetra1234",
+            password="bormeysql", # Change it to your password
             host="localhost",
             database="Shop"
         )
@@ -27,7 +27,10 @@ def signin():
         if username == 'admin' and password=='12345':
             messagebox.showinfo("Login Granted", "Welcome Admin")
             root.destroy()
-            subprocess.run(['python', 'admin_product.py'])   
+            # subprocess.run(['python', 'admin_product.py'])  
+            import admin_product
+            admin_product.window()
+
         else:
             sql = "SELECT * FROM user_account WHERE username = %s AND password = %s"
             cursor.execute(sql, (username, password))
@@ -64,7 +67,7 @@ def sign_out():
         try:
             conn = mysql.connector.connect(
                 user="root",
-                password="Chetra1234",
+                password="bormeysql", # Change it to your password
                 host="localhost",
                 database="Shop"
             )
@@ -117,7 +120,9 @@ def on_leave(e):
 
 def open_signup_screen():
     root.destroy()
-    subprocess.run(['python', 'signup.py'])   
+    # subprocess.run(['python', 'signup.py'])   
+    import signup
+    signup.window()
     
 
 code = Entry(frame, fg='black', border=0, bg='white', highlightbackground='white', highlightthickness=0, font=('Lato', 16))

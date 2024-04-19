@@ -18,7 +18,7 @@ window.resizable(False, False)
 connection = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="Chetra1234",  # Change it to your password
+    password="bormeysql",  # Change it to your password
     database="Shop"
 )
 
@@ -134,14 +134,23 @@ def products_click():
 
 def customers_click():
     window.destroy()
-    subprocess.run(['python', 'admin_customer.py'])
+    # subprocess.run(['python', 'admin_customer.py'])
+    import admin_customer
+    admin_customer.window()
 
 def manage_click():
-    print("Manage button clicked")
+    # print("Manage button clicked")
+    window.destroy()
+    import admin_manage
+    admin_manage.window()
 
 def exit_click():
     window.destroy()
-    subprocess.run(['python', 'login.py'])
+    # subprocess.run(['python', 'login.py'])
+    import login
+    login.window()
+
+
 img = PhotoImage(file='store.png')
 img = img.subsample(4)
 Label(window, image=img, bg='white').place(x=120, y=100)
@@ -157,7 +166,7 @@ products_button.pack(side="left",padx=20)
 customers_button = tk.Button(button_frame, text="Customers", font=button_font, command=customers_click, width=10,padx=10)
 customers_button.pack(side="left", padx=20)
 
-manage_button = tk.Button(button_frame, text="Manage", font=button_font, command=manage_click, width=10)
+manage_button = tk.Button(button_frame, text="Manage", font=button_font, command=manage_click, width=10, padx=10)
 manage_button.pack(side="left",padx= 20)
 
 search_button = tk.Button(button_frame, text="Search", font=button_font, width=10, command=search_product)
