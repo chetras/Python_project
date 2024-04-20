@@ -198,7 +198,7 @@ form_entries = []
 for label_text in form_labels:
     label = tk.Label(form_frame, text=label_text, font=button_font,bg="white")  # Increase font size for labels
     label.pack(anchor="w")
-    entry = tk.Entry(form_frame, font=entry_font)  # Increase font size for entries
+    entry = tk.Entry(form_frame, font=entry_font, highlightbackground="black", highlightcolor="black", highlightthickness=2)  # Increase font size for entries
     entry.pack(anchor="w")
     form_entries.append(entry)
     
