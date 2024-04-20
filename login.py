@@ -110,13 +110,21 @@ user.bind('<FocusOut>', on_leave)
 Frame(frame, width=320, height=3, bg='#856947').place(x=50, y=180)
 
 
-def on_enter(e):
-    code.delete(0, 'end')
+def on_enter_password(e):
+    if code.get() == 'Password':
+        code.delete(0, 'end')
+        code.config(show="*")
 
-def on_leave(e):
-    name = code.get()
-    if name == '':
+def on_leave_password(e):
+    if code.get() == '':
+        code.config(show="")
         code.insert(0, 'Password')
+
+code = Entry(frame, fg='black', border=0, bg='white', highlightbackground='white', highlightthickness=0, font=('Lato', 16))
+code.place(x=50, y=220)
+code.insert(0, 'Password')
+code.bind('<FocusIn>', on_enter_password)
+code.bind('<FocusOut>', on_leave_password)
 
 def open_signup_screen():
     root.destroy()
@@ -125,11 +133,6 @@ def open_signup_screen():
     signup.window()
     
 
-code = Entry(frame, fg='black', border=0, bg='white', highlightbackground='white', highlightthickness=0, font=('Lato', 16))
-code.place(x=50, y=220)
-code.insert(0, 'Password')
-code.bind('<FocusIn>', on_enter)
-code.bind('<FocusOut>', on_leave)
 
 Frame(frame, width=320, height=3, bg='#856947').place(x=50, y=250)
 
