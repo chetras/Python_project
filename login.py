@@ -17,7 +17,7 @@ def signin():
     try:
         conn = mysql.connector.connect(
             user="root",
-            password="Chetra1234", # Change it to your password
+            password="bormeysql", # Change it to your password
             host="localhost",
             database="Shop"
         )
@@ -47,7 +47,9 @@ def signin():
                 conn.commit()
                 messagebox.showinfo("Login Granted", "Welcome")
                 root.destroy()
-                subprocess.run(['python', 'user_shop.py'])
+                # subprocess.run(['python', 'user_shop.py'])
+                import user_shop
+                user_shop.window()
             else:
                 messagebox.showerror("Login Failed", "Invalid username or password")
         conn.close()
@@ -67,7 +69,7 @@ def sign_out():
         try:
             conn = mysql.connector.connect(
                 user="root",
-                password="Chetra1234", # Change it to your password
+                password="bormeysql", # Change it to your password
                 host="localhost",
                 database="Shop"
             )
