@@ -14,6 +14,7 @@ window = tk.Tk()
 window.title("Product Management System")
 window.geometry('1000x680+300+200')
 window.resizable(False, False)
+window.configure(bg="beige")
 
 # Establish Connection
 connection = mysql.connector.connect(
@@ -205,7 +206,7 @@ def exit_click():
 
 
 # Frame for Buttons
-button_frame = tk.Frame(window)
+button_frame = tk.Frame(window,bg="beige")
 button_frame.pack(side="top", fill="x")
 
 # Buttons for Products, Customers, Manage, Exit
@@ -219,17 +220,14 @@ signout_button = tk.Button(window, text="Sign Out", font=button_font, command=ex
 signout_button.pack(side="bottom", anchor="sw", padx=20, pady=10)
 
 
-# Icon Area
-icon_label = tk.Frame(window, height=50, width=100)
-icon_label.pack(side="left", padx=10)
 
 # Form Fields
-form_frame = tk.Frame(window)
+form_frame = tk.Frame(window,bg="beige")
 form_frame.place(x=100, y=20)
-form_frame.pack(side="left", padx=10,pady=20)
+form_frame.pack(side="left", padx=40)
 
 # Add a label above the entry fields
-order_label = tk.Label(form_frame, text="Order Here", font=("Lato", 30))
+order_label = tk.Label(form_frame, text="Order Here", font=("Lato", 30),bg="beige")
 order_label.pack(anchor="w", pady=(0, 10))  # Add some vertical padding
 
 
@@ -237,37 +235,37 @@ form_labels = [ "Pro.#","Pro. Name", "Quantity"]
 form_entries = []
 
 for label_text in form_labels:
-    label = tk.Label(form_frame, text=label_text, font=button_font)  # Increase font size for labels
+    label = tk.Label(form_frame, text=label_text, font=button_font,bg="beige")  # Increase font size for labels
     label.pack(anchor="w")
     entry = tk.Entry(form_frame, font=entry_font)  # Increase font size for entries
     entry.pack(anchor="w")
     form_entries.append(entry)
 
 # Add a label under the entry fields to display the total amount
-total_label = tk.Label(form_frame, text="Total:", font=("Lato", 15))
+total_label = tk.Label(form_frame, text="Total:", font=("Lato", 15),bg="beige")
 total_label.pack(anchor="w", pady=(10, 0))  # Add some vertical padding
 
-amount_label = tk.Label(form_frame, text="Amount:", font=("Lato", 15))
+amount_label = tk.Label(form_frame, text="Amount:", font=("Lato", 15),bg="beige")
 amount_label.pack(anchor="w", pady=(10, 0))  # Add some vertical padding
 
 amount_entry = tk.Entry(form_frame, font=entry_font)  # Increase font size for entries
 amount_entry.pack(anchor="w")
 # Buttons
-buttons_frame = tk.Frame(window)
+buttons_frame = tk.Frame(window,bg="beige")
 buttons_frame.pack(side="left", padx=10)
 
 pay_button = tk.Button(buttons_frame, text="Pay", width=10, command=pay_product)
-pay_button.pack(fill="x", padx=5, pady=10)
+pay_button.pack(fill="x",  pady=10)
 
 total_button = tk.Button(buttons_frame, text="Calculate Total", width=10, command=calculate_total)
-total_button.pack(fill="x", padx=5, pady=10)
+total_button.pack(fill="x",  pady=10)
 
 cancel_button = tk.Button(buttons_frame, text="Cancel", width=10, command=cancel_product)
-cancel_button.pack(fill="x", padx=5, pady=10)
+cancel_button.pack(fill="x",  pady=10)
 
 # Table
-table_frame = tk.Frame(window)
-table_frame.pack(side="left", padx=10, fill="both", expand=True)
+table_frame = tk.Frame(window,bg="beige")
+table_frame.pack(side="left", pady=10, fill="both", expand=True)
 
 columns = ("#", "Name", "Type", "Price", "Stock")
 table = ttk.Treeview(table_frame, columns=columns, show="headings")
