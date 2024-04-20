@@ -18,7 +18,7 @@ window.resizable(False, False)
 connection = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="bormeysql",  # Change it to your password
+    password="Chetra1234",  # Change it to your password
     database="Shop"
 )
 
@@ -48,22 +48,26 @@ def populate_table():
         table.insert("", "end", values=row)
 
 def search_product():
-    # Get the user ID from the entry field
-    username_id = form_entries[0].get()  # Assuming the user ID entry is at index 0
+    # Get the user ID and username from the entry fields
+    user_id = form_entries[0].get()  # Assuming the user ID entry is at index 0
+    username = form_entries[1].get()  # Assuming the username entry is at index 1
 
     # Clear the table before performing the search
     for item in table.get_children():
         table.delete(item)
 
-    # Query the database for the user ID
-    cursor.execute("SELECT * FROM user_account WHERE id = %s", (username_id,))
-    
+    # Query the database for the user ID or username
+    if user_id:
+        cursor.execute("SELECT * FROM user_account WHERE id = %s", (user_id,))
+    elif username:
+        cursor.execute("SELECT * FROM user_account WHERE username = %s", (username,))
+
     # Populate the table with the search result
     for row in cursor.fetchall():
         table.insert("", "end", values=row)
 
     clear_entries()
-    
+
 # Button Click Functions
 def products_click():
     window.destroy()

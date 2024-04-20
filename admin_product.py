@@ -4,6 +4,8 @@ import mysql.connector
 import os
 from tkinter import messagebox
 import subprocess
+from PIL import ImageTk, Image
+
 
 
 from tkinter import ttk
@@ -18,7 +20,7 @@ window.resizable(False, False)
 connection = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="bormeysql",  # Change it to your password
+    password="Chetra1234",  # Change it to your password
     database="Shop"
 )
 
@@ -151,9 +153,6 @@ def exit_click():
     login.window()
 
 
-img = PhotoImage(file='store.png')
-img = img.subsample(4)
-Label(window, image=img, bg='white').place(x=120, y=100)
 
 # Frame for Buttons
 button_frame = tk.Frame(window)
@@ -169,8 +168,7 @@ customers_button.pack(side="left", padx=20)
 manage_button = tk.Button(button_frame, text="Manage", font=button_font, command=manage_click, width=10, padx=10)
 manage_button.pack(side="left",padx= 20)
 
-search_button = tk.Button(button_frame, text="Search", font=button_font, width=10, command=search_product)
-search_button.pack(side="right", padx=10, pady=10, anchor=E)
+
 
 search_entry = tk.Entry(button_frame, font=button_font)
 search_entry.pack(side="right", padx=10, anchor=E)
@@ -178,17 +176,16 @@ search_entry.pack(side="right", padx=10, anchor=E)
 signout_button = tk.Button(window, text="Sign Out", font=button_font, command=exit_click, width=10)
 signout_button.pack(side="bottom", anchor="sw", padx=20, pady=10)
 
-# signout_button = tk.Button(button_frame, text="Sign Out", font=button_font, command=exit_click, width=10)
-# signout_button.pack(side="right", padx = 30)
 
-# Icon Area
-icon_label = tk.Frame(window, height=50, width=100)
-icon_label.pack(side="left", padx=10)
+icon_image = Image.open("store.png")
+icon_image = icon_image.resize((200, 200))
+icon_image = ImageTk.PhotoImage(icon_image)
+icon_label = tk.Label(image=icon_image, bg="white")
+icon_label.pack(side="top", padx=25, pady=0,anchor="w")
 
 # Form Fields
 form_frame = tk.Frame(window)
-form_frame.place(x=100, y=20)
-form_frame.pack(side="left", padx=10)
+form_frame.pack(side="left", padx=25,anchor="w")
 
 form_labels = [ "Pro.#","Pro. Name", "Type", "Price", "Stock"]
 form_entries = []
@@ -199,6 +196,10 @@ for label_text in form_labels:
     entry = tk.Entry(form_frame, font=entry_font)  # Increase font size for entries
     entry.pack(anchor="w")
     form_entries.append(entry)
+    
+search_button = tk.Button(button_frame, text="Search", font=button_font, command=search_product)
+search_button.pack(side="right", padx=10, pady=10, anchor=E)
+
 
 
 # Buttons
@@ -221,10 +222,11 @@ showall_button.pack(fill="x", padx=5, pady=10)
 
 # Table
 table_frame = tk.Frame(window)
-table_frame.pack(side="left", padx=10, fill="both", expand=True)
+table_frame.pack(side="top", padx=10, fill="both", expand=True, pady=10)
+table_height = 10  # Set the desired height of the table (number of visible rows)
 
 columns = ("#", "Name", "Type", "Price", "Stock")
-table = ttk.Treeview(table_frame, columns=columns, show="headings")
+table = ttk.Treeview(table_frame, columns=columns, show="headings", height=table_height)
 for col in columns:
     table.heading(col, text=col)
     table.column(col, width=100)

@@ -19,7 +19,7 @@ window.resizable(False, False)
 connection = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="bormeysql",  # Change it to your password
+    password="Chetra1234",  # Change it to your password
     database="Shop"
 )
 
@@ -37,7 +37,7 @@ def sign_out():
         try:
             conn = mysql.connector.connect(
                 user="root",
-                password="bormeysql", #Change password
+                password="Chetra1234", #Change password
                 host="localhost",
                 database="Shop"
             )
@@ -135,16 +135,18 @@ def calculate_total():
     product = cursor.fetchone()
 
     if product:
-        _, _, _, price, _ = product
+        _, _, _, price, stock = product
         price = float(price)  # Convert price to a numeric type
-        quantity = int(quantity)  # Ensure quantity is an integer
-  
+        stock = float(stock)  # Convert stock to an integer
 
-        # Calculate the total amount
-        total_amount = price * quantity
+        if quantity > stock:
+            messagebox.showerror("Insufficient Stock", "The quantity entered is greater than the available stock.")
+        else:
+            # Calculate the total amount
+            total_amount = price * quantity
 
-        # Display the total amount
-        total_label.config(text="Total: $" + str(total_amount))
+            # Display the total amount
+            total_label.config(text="Total: $" + str(total_amount))
     else:
         # Show an error message if the product does not exist
         messagebox.showerror("Product Not Found", "The product with the specified ID and name does not exist.")
