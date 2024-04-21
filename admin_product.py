@@ -20,7 +20,7 @@ window.resizable(False, False)
 connection = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="bormeysql",  # Change the password
+    password="Chetra1234",  # Change the password
     database="Shop"
 )
 

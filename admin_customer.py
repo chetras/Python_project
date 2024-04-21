@@ -17,7 +17,7 @@ window.resizable(False, False)
 connection = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="bormeysql",  # Change the password
+    password="Chetra1234",  # Change the password
     database="Shop"
 )
 
@@ -42,7 +42,7 @@ def show_product():
 
 # Function to populate the table view with data from the database
 def populate_table():
-    cursor.execute("SELECT * FROM user_account")
+    cursor.execute("SELECT ua.id, ua.username, ua.password, uo.amount, uo.total FROM user_account ua JOIN user_order uo ON ua.id = uo.user_id")
     for row in cursor.fetchall():
         table.insert("", "end", values=row)
 

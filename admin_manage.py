@@ -16,7 +16,7 @@ window.geometry('1000x680+300+200')
 connection = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="bormeysql",  # Change the password
+    password="Chetra1234",  # Change the password
     database="Shop"
 )
 
@@ -73,7 +73,11 @@ order_numbers = list(range(1, len(total_income_data) + 1))
 cursor.execute("SELECT name, stock FROM Products")
 products_data = cursor.fetchall()
 product_names = [row[0] for row in products_data]
-product_stock = [row[1] for row in products_data]
+product_stock = [float(row[1]) for row in products_data]  # Convert stock from string to int
+
+# Sort the product stock and product names in ascending order
+sorted_product_stock, sorted_product_names = zip(*sorted(zip(product_stock, product_names)))
+
 
 # Create line graph for total income
 fig_total_income = Figure(figsize=(6, 4))
@@ -93,14 +97,15 @@ canvas_total_income.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 # Create bar chart for product stock
 fig_product_stock = Figure(figsize=(8, 6))
 ax_product_stock = fig_product_stock.add_subplot(111)
-ax_product_stock.bar(product_names, product_stock, color='skyblue')
+ax_product_stock.bar(sorted_product_names, sorted_product_stock, color='skyblue')
 ax_product_stock.set_xlabel('Product Name', fontsize=12)  # Adjust font size
 ax_product_stock.set_ylabel('Stock')
 ax_product_stock.set_title('Product Stock Levels')
-ax_product_stock.set_xticklabels(product_names, rotation=45, fontsize=8)  # Adjust rotation angle and font size
+ax_product_stock.set_xticklabels(sorted_product_names, rotation=45, fontsize=8)  # Adjust rotation angle and font size
 
 canvas_product_stock = FigureCanvasTkAgg(fig_product_stock, master=window)
 canvas_product_stock.draw()
 canvas_product_stock.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+
 
 window.mainloop()
