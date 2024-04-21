@@ -18,7 +18,7 @@ window.resizable(False, False)
 connection = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="Chetra1234",  # Change it to your password
+    password="bormeysql",  # Change it to your password
     database="Shop"
 )
 
@@ -71,16 +71,22 @@ def search_product():
 # Button Click Functions
 def products_click():
     window.destroy()
-    subprocess.run(['python', 'admin_product.py'])
+    # subprocess.run(['python', 'admin_product.py'])
+    import admin_product
+    admin_product.window()
 
 
 def manage_click():
     window.destroy()
-    subprocess.run(['python', 'admin_manage.py'])
+    # subprocess.run(['python', 'admin_manage.py'])
+    import admin_manage
+    admin_manage.window()
 
 def exit_click():
     window.destroy()
-    subprocess.run(['python', 'login.py'])
+    # subprocess.run(['python', 'login.py'])
+    import login
+    login.window()
 img = PhotoImage(file='customer.png')
 img = img.subsample(4)
 Label(window, image=img, bg='white').place(x=120, y=100)
