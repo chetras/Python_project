@@ -1,6 +1,5 @@
 from tkinter import *
 from tkinter import messagebox
-import os
 import subprocess
 import mysql.connector
 
@@ -15,6 +14,7 @@ def signin():
     username=user.get()
     password=code.get()
     try:
+        # Establish Connection
         conn = mysql.connector.connect(
             user="root",
             password="bormeysql", # Change it to your password
@@ -69,7 +69,7 @@ def sign_out():
         try:
             conn = mysql.connector.connect(
                 user="root",
-                password="bormeysql", # Change it to your password
+                password="bormeysql", # Change the password
                 host="localhost",
                 database="Shop"
             )
@@ -138,7 +138,6 @@ def open_signup_screen():
 
 Frame(frame, width=320, height=3, bg='#856947').place(x=50, y=250)
 
-
 Button(frame, width=32, height=2, text='Sign in', highlightbackground='#856947', bg='#856947', fg='black', border=0, command=signin).place(x=50, y=300)
 
 label = Label(frame, text="Don't have an account?", fg='black', bg='white', font=('Lato', 14))
@@ -147,5 +146,5 @@ label.place(x=50, y=365)
 sign_up = Button(frame, width=8, height=2, text='Sign up', border=0, highlightbackground='#856947', cursor='hand2', fg='black',command=open_signup_screen)
 sign_up.place(x=270, y=360)
 
-root.protocol("WM_DELETE_WINDOW", sign_out)  # Bind exit_click to window close
+root.protocol("WM_DELETE_WINDOW", sign_out)  
 root.mainloop()

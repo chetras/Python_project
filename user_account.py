@@ -1,10 +1,10 @@
 import tkinter as tk
 from tkinter import *
 import mysql.connector
-import os
 from tkinter import messagebox
 import subprocess
 from tkinter import ttk
+
 
 # Create the main window
 window = tk.Tk()
@@ -16,7 +16,7 @@ window.resizable(False, False)
 connection = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="bormeysql",  # Change it to your password
+    password="bormeysql",  # Change the password
     database="Shop"
 )
 
@@ -24,8 +24,8 @@ connection = mysql.connector.connect(
 cursor = connection.cursor()
 
 # Custom Font for Buttons
-button_font = ("Lato", 15)  # Custom font for buttons
-entry_font = ("Lato", 12)  # Custom font for entries
+button_font = ("Lato", 15)  
+entry_font = ("Lato", 12)  
 
 # Retrieving the user_id from the file
 with open('user_id.txt', 'r') as file:
@@ -43,6 +43,7 @@ def populate_table():
     for row in cursor.fetchall():
         table.insert("", "end", values=row)
 
+
 def get_logged_in_username():
     # Retrieve the username from the user_account table based on the logged-in user
     cursor.execute("SELECT username FROM user_account WHERE logged_in = 1")
@@ -52,6 +53,7 @@ def get_logged_in_username():
     else:
         return ""
     
+
 def sign_out():
     with open('user_id.txt', 'r') as file:
         user_id = int(file.read())
@@ -59,7 +61,7 @@ def sign_out():
         try:
             conn = mysql.connector.connect(
                 user="root",
-                password="bormeysql", # Change it to your password
+                password="bormeysql", # Change the password
                 host="localhost",
                 database="Shop"
             )
@@ -92,10 +94,6 @@ def exit_click():
     import login
     login.window()
 
-
-# img = PhotoImage(file='customer.png')
-# img = img.subsample(4)
-# Label(window, image=img, bg='white').place(x=120, y=100)
 
 # Frame for Buttons
 button_frame = tk.Frame(window)

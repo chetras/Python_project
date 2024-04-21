@@ -1,7 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
 import mysql.connector
-import sys
 import subprocess
 
 window = Tk()
@@ -51,7 +50,6 @@ def signup():
                 messagebox.showerror('Invalid', 'Both passwords should match.')
     except mysql.connector.Error as error:
         messagebox.showerror('Error', f'Failed to insert record into user_account table: {error}')
-
 
 
 
@@ -110,6 +108,7 @@ code.bind('<FocusIn>', on_enter_password)
 code.bind('<FocusOut>', on_leave_password)
 
 Frame(frame, width=320, height=3, bg='#856947').place(x=50, y=250)
+
 
 # Confirm Password
 def on_enter_confirm_password(e):

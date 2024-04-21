@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import *
 import mysql.connector
-import os
 from tkinter import messagebox
 import subprocess
 from tkinter import ttk
@@ -17,7 +16,7 @@ window.geometry('1000x680+300+200')
 connection = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="bormeysql",  # Change it to your password
+    password="bormeysql",  # Change the password
     database="Shop"
 )
 
@@ -25,8 +24,8 @@ connection = mysql.connector.connect(
 cursor = connection.cursor()
 
 # Custom Font for Buttons
-button_font = ("Lato", 15)  # Custom font for buttons
-entry_font = ("Lato", 12)  # Custom font for entries
+button_font = ("Lato", 15)  
+entry_font = ("Lato", 12)  
 
 def products_click():
     window.destroy()

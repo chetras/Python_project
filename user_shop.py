@@ -1,12 +1,11 @@
 import tkinter as tk
 from tkinter import *
 import mysql.connector
-import os
 from tkinter import messagebox
 import subprocess
-
-
 from tkinter import ttk
+
+
 with open('user_id.txt', 'r') as file:
         user_id = int(file.read())
 # Create the main window
@@ -14,7 +13,6 @@ window = tk.Tk()
 window.title("Product Management System")
 window.geometry('1000x680+300+200')
 window.resizable(False, False)
-# window.configure(bg="white")
 
 # Establish Connection
 connection = mysql.connector.connect(
@@ -28,8 +26,8 @@ connection = mysql.connector.connect(
 cursor = connection.cursor()
 
 # Custom Font for Buttons
-button_font = ("Lato", 15)  # Custom font for buttons
-entry_font = ("Lato", 12)  # Custom font for entries
+button_font = ("Lato", 15) 
+entry_font = ("Lato", 12)  
 
 def sign_out():
     with open('user_id.txt', 'r') as file:
@@ -38,7 +36,7 @@ def sign_out():
         try:
             conn = mysql.connector.connect(
                 user="root",
-                password="bormeysql", #Change password
+                password="bormeysql", #Change the password
                 host="localhost",
                 database="Shop"
             )
@@ -63,7 +61,7 @@ def clear_entries():
 def update_stock(product_id, quantity):
     # Retrieve current stock from the database
     cursor.execute("SELECT stock FROM Products WHERE id = %s", (product_id,))
-    current_stock = float(cursor.fetchone()[0])  # Convert to float
+    current_stock = int(cursor.fetchone()[0])  # Convert to float
 
     # Calculate new stock
     new_stock = current_stock - quantity
@@ -187,9 +185,6 @@ def populate_table():
     for row in cursor.fetchall():
         table.insert("", "end", values=row)
 
-# def shop_click():
-#     window.destroy()
-#     subprocess.run(['python', 'user_shop.py'])   
 
 def acc_click():
     window.destroy()
@@ -218,7 +213,6 @@ account_button.pack(side="left", padx=20)
 
 signout_button = tk.Button(window, text="Sign Out", font=button_font, command=exit_click, width=10)
 signout_button.pack(side="bottom", anchor="sw", padx=20, pady=10)
-
 
 
 # Form Fields
@@ -250,6 +244,7 @@ amount_label.pack(anchor="w", pady=(10, 0))  # Add some vertical padding
 
 amount_entry = tk.Entry(form_frame, font=entry_font)  # Increase font size for entries
 amount_entry.pack(anchor="w")
+
 # Buttons
 buttons_frame = tk.Frame(window)
 buttons_frame.pack(side="left", padx=10)

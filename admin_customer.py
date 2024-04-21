@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import *
 import mysql.connector
-import os
 from tkinter import messagebox
 import subprocess
 
@@ -18,7 +17,7 @@ window.resizable(False, False)
 connection = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="bormeysql",  # Change it to your password
+    password="bormeysql",  # Change the password
     database="Shop"
 )
 
@@ -26,8 +25,8 @@ connection = mysql.connector.connect(
 cursor = connection.cursor()
 
 # Custom Font for Buttons
-button_font = ("Lato", 15)  # Custom font for buttons
-entry_font = ("Lato", 12)  # Custom font for entries
+button_font = ("Lato", 15)
+entry_font = ("Lato", 12)  
 
 def clear_entries():
     for entry in form_entries:
@@ -75,7 +74,6 @@ def products_click():
     import admin_product
     admin_product.window()
 
-
 def manage_click():
     window.destroy()
     # subprocess.run(['python', 'admin_manage.py'])
@@ -90,6 +88,7 @@ def exit_click():
 img = PhotoImage(file='customer.png')
 img = img.subsample(4)
 Label(window, image=img, bg='white').place(x=120, y=100)
+
 
 # Frame for Buttons
 button_frame = tk.Frame(window)

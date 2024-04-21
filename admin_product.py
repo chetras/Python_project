@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import *
 import mysql.connector
-import os
 from tkinter import messagebox
 import subprocess
 from PIL import ImageTk, Image
@@ -15,13 +14,13 @@ window = tk.Tk()
 window.title("Product Management System")
 window.geometry('1000x680+300+200')
 window.resizable(False, False)
-# window.configure(bg="#fff")
+
 
 # Establish Connection
 connection = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="bormeysql",  # Change it to your password
+    password="bormeysql",  # Change the password
     database="Shop"
 )
 
@@ -29,8 +28,8 @@ connection = mysql.connector.connect(
 cursor = connection.cursor()
 
 # Custom Font for Buttons
-button_font = ("Lato", 15)  # Custom font for buttons
-entry_font = ("Lato", 12)  # Custom font for entries
+button_font = ("Lato", 15)
+entry_font = ("Lato", 12)  
 
 def clear_entries():
     for entry in form_entries:
