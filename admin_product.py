@@ -15,7 +15,7 @@ window = tk.Tk()
 window.title("Product Management System")
 window.geometry('1000x680+300+200')
 window.resizable(False, False)
-window.configure(bg="white")
+# window.configure(bg="#fff")
 
 # Establish Connection
 connection = mysql.connector.connect(
@@ -156,7 +156,7 @@ def exit_click():
 
 
 # Frame for Buttons
-button_frame = tk.Frame(window,bg="white")
+button_frame = tk.Frame(window)
 button_frame.pack(side="top", fill="x")
 
 # Buttons for Products, Customers, Manage, Exit
@@ -178,27 +178,23 @@ signout_button = tk.Button(window, text="Sign Out", font=button_font, command=ex
 signout_button.pack(side="bottom", anchor="sw", padx=20, pady=10)
 
 
-# icon_image = Image.open("store.png")
-# icon_image = icon_image.resize((200, 200))
-# icon_image = ImageTk.PhotoImage(icon_image)
-# icon_label = tk.Label(image=icon_image, bg="white")
-# icon_label.pack(side="top", padx=25, pady=0,anchor="w")
-
 img = PhotoImage(file='store.png')
 img = img.subsample(4)
 Label(window, image=img, bg='white').place(x=25,y=70)
 
+
+
 # Form Fields
-form_frame = tk.Frame(window,bg="white")
+form_frame = tk.Frame(window)
 form_frame.pack(side="left", padx=25,anchor="w")
 
-form_labels = [ "Pro.#","Pro. Name", "Type", "Price", "Stock"]
+form_labels = [ "Product #ID","Product Name", "Type", "Price", "Stock"]
 form_entries = []
 
 for label_text in form_labels:
-    label = tk.Label(form_frame, text=label_text, font=button_font,bg="white")  # Increase font size for labels
+    label = tk.Label(form_frame, text=label_text, font=button_font)  
     label.pack(anchor="w")
-    entry = tk.Entry(form_frame, font=entry_font, highlightbackground="black", highlightcolor="black", highlightthickness=2)  # Increase font size for entries
+    entry = tk.Entry(form_frame, font=entry_font)
     entry.pack(anchor="w")
     form_entries.append(entry)
     
@@ -208,7 +204,7 @@ search_button.pack(side="right", padx=10, pady=10, anchor=E)
 
 
 # Buttons
-buttons_frame = tk.Frame(window,bg="white")
+buttons_frame = tk.Frame(window)
 buttons_frame.pack(side="left", padx=10)
 
 add_button = tk.Button(buttons_frame, text="Add", width=10, command=add_product)
@@ -226,7 +222,7 @@ showall_button.pack(fill="x", padx=5, pady=10)
 
 
 # Table
-table_frame = tk.Frame(window,bg="white")
+table_frame = tk.Frame(window)
 table_frame.pack(side="top", padx=10, fill="both", expand=True, pady=10)
 
 columns = ("#", "Name", "Type", "Price", "Stock")

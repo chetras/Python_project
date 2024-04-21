@@ -25,7 +25,7 @@ def signin():
         cursor = conn.cursor()
 
         if username == 'admin' and password=='12345':
-            messagebox.showinfo("Login Granted", "Welcome Admin")
+            messagebox.showinfo("Login Granted", "Welcome, Admin!")
             root.destroy()
             # subprocess.run(['python', 'admin_product.py'])  
             import admin_product
@@ -45,13 +45,13 @@ def signin():
 
                 update_logged_in_status(cursor, user_id, 1)
                 conn.commit()
-                messagebox.showinfo("Login Granted", "Welcome")
+                messagebox.showinfo("Login Granted", "Welcome to Our Shop!")
                 root.destroy()
                 # subprocess.run(['python', 'user_shop.py'])
                 import user_shop
                 user_shop.window()
             else:
-                messagebox.showerror("Login Failed", "Invalid username or password")
+                messagebox.showerror("Login Failed", "Invalid username or password.")
         conn.close()
     except mysql.connector.Error as err: 
         messagebox.showerror("Error", f"An error occurred: {str(err)}")
