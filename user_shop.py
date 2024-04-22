@@ -10,7 +10,7 @@ with open('user_id.txt', 'r') as file:
         user_id = int(file.read())
 # Create the main window
 window = tk.Tk()
-window.title("Product Management System")
+window.title("User Shop")
 window.geometry('1000x680+300+200')
 window.resizable(False, False)
 

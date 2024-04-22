@@ -9,14 +9,14 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 # Create the main window
 window = tk.Tk()
-window.title("Product Management System")
+window.title("Admin Manage Page")
 window.geometry('1000x680+300+200')
 
 # Establish Connection
 connection = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="Chetra1234",  # Change the password
+    password="bormeysql",  # Change the password
     database="Shop"
 )
 

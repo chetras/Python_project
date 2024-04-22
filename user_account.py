@@ -8,7 +8,7 @@ from tkinter import ttk
 
 # Create the main window
 window = tk.Tk()
-window.title("Product Management System")
+window.title("User Account")
 window.geometry('1000x680+300+200')
 window.resizable(False, False)
 

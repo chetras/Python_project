@@ -9,7 +9,7 @@ from tkinter import ttk
 
 # Create the main window
 window = tk.Tk()
-window.title("Product Management System")
+window.title("Admin Customers Page")
 window.geometry('1000x680+300+200')
 window.resizable(False, False)
 
@@ -17,7 +17,7 @@ window.resizable(False, False)
 connection = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="Chetra1234",  # Change the password
+    password="bormeysql",  # Change the password
     database="Shop"
 )
 
@@ -117,7 +117,7 @@ form_frame = tk.Frame(window)
 form_frame.place(x=100, y=20)
 form_frame.pack(side="left", padx=10)
 
-form_labels = [ "User.#","User. Name"]
+form_labels = [ "User #ID","Username"]
 form_entries = []
 
 for label_text in form_labels:
@@ -142,7 +142,7 @@ showall_button.pack(fill="x", padx=5, pady=10)
 table_frame = tk.Frame(window)
 table_frame.pack(side="left", padx=10, fill="both", expand=True)
 
-columns = ("#", "Usrname", "password","Order", "Amount")
+columns = ("#", "Username", "Password","Order", "Amount")
 table = ttk.Treeview(table_frame, columns=columns, show="headings")
 for col in columns:
     table.heading(col, text=col)

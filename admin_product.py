@@ -11,7 +11,7 @@ from tkinter import ttk
 
 # Create the main window
 window = tk.Tk()
-window.title("Product Management System")
+window.title("Admin Products Page")
 window.geometry('1000x680+300+200')
 window.resizable(False, False)
 
@@ -20,7 +20,7 @@ window.resizable(False, False)
 connection = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="Chetra1234",  # Change the password
+    password="bormeysql",  # Change the password
     database="Shop"
 )
 
